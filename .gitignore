@@ -1,0 +1,12 @@
+*.egg-info
+*.log
+*.log.*
+*.pdf
+*.png
+*.pyc
+*.svg
+
+*.DS_Store
+
+
+/**/__pycache__/

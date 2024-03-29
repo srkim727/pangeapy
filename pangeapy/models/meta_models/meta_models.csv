@@ -1,0 +1,5 @@
+meta_models/Blood_predictor_v03.pkl,https://github.com/srkim727/pangeapy/raw/main/pangeapy/models/meta_models/Blood_predictor_v03.pkl
+meta_models/Organ_predictor_v03.pkl,https://github.com/srkim727/pangeapy/raw/main/pangeapy/models/meta_models/Organ_predictor_v03.pkl
+meta_models/Tissue_typing_v03.h5ad,https://github.com/srkim727/pangeapy/raw/main/pangeapy/models/meta_models/Tissue_typing_v03.h5ad
+meta_models/Blood_typing_v03.h5ad,https://github.com/srkim727/pangeapy/raw/main/pangeapy/models/meta_models/Blood_typing_v03.h5ad
+meta_models/Tissue_predictor_v03.pkl,https://github.com/srkim727/pangeapy/raw/main/pangeapy/models/meta_models/Tissue_predictor_v03.pkl
