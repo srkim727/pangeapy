@@ -127,7 +127,7 @@ class CellAnnotator(CellModels):
         """
         # 
         resdic = {}
-        print('start cell type annotation..')
+        
         modelinfo = self.modelinfo.copy()
         assert int(modelinfo['Level'].max().split("Level")[1]) >= target_level
         assert anno_key in ['majority_voting', 'predicted_labels']
