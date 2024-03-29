@@ -4,17 +4,23 @@ import celltypist
 import pickle as pkl
 import scanpy as sc
 from scipy.stats import gmean
+from tqdm import tqdm
+
+
 
 from .models import CellModels
 
 
-
+multiprocessing.set_start_method('fork')
 celltypist.logger.set_level(40)
 
 def read_pickle(filename):
     with open(filename, "rb") as file:
         data = pkl.load(file)
         return data
+
+def process(token):
+    return token['text']
 
 
 class CellAnnotator(CellModels):
@@ -121,18 +127,22 @@ class CellAnnotator(CellModels):
             Vector containing the class labels for each sample.
         """
         # 
+        resdic = {}
+        print('start cell type annotation..')
         modelinfo = self.modelinfo.copy()
         assert int(modelinfo['Level'].max().split("Level")[1]) >= target_level
         assert anno_key in ['majority_voting', 'predicted_labels']
         n_cutoff = np.max([n_cutoff, 50])
 
-        resdic = {}
+        
+
         if sample_key is not None:
             
             sample_list = adata.obs[sample_key].unique()
             sample_list = [i for i in sample_list if adata.obs.value_counts(sample_key).loc[i] > n_cutoff]
 
-            for _sample in sample_list:
+            def _annotation_process(index):
+                _sample = sample_list[index]
                 adata_sample = adata[adata.obs[sample_key] == _sample].copy()
                 
                 # Initialize and re-run PCA sample-wise
@@ -145,7 +155,7 @@ class CellAnnotator(CellModels):
                     del adata.obsm['X_pca']
                     print(f'initializing sample-wise PCA...')
 
-                resdic[_sample] = self._annotate_by_sample( adata = adata_sample, 
+                _return_df = self._annotate_by_sample( adata = adata_sample, 
                                                             sample_name = _sample,
                                                             target_level=target_level,
                                                             n_cutoff=n_cutoff,
@@ -153,6 +163,12 @@ class CellAnnotator(CellModels):
                                                             anno_key=anno_key,
                                                             score_key=score_key,
                                                             celltypist_kwargs=celltypist_kwargs)
+                return _sample, _return_df
+            
+            resdic_ls = [_annotation_process(i) for i in range(len(sample_list))]
+            dummy_ls = [process(token) for token in tqdm(resdic_ls)]
+            resdic = dict(resdic_ls)
+                
         else:
             adata_sample = adata.copy()
             _sample = 'single-run'
