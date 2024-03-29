@@ -160,7 +160,6 @@ class CellAnnotator(CellModels):
 
                 if 'X_pca' in adata_sample.obsm:
                     del adata.obsm['X_pca']
-                    print(f'initializing sample-wise PCA...')
 
                 _return_df = self._annotate_by_sample( adata = adata_sample, 
                                                             sample_name = _sample,
