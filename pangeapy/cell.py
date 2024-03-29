@@ -50,6 +50,7 @@ class CellAnnotator(CellModels):
                             majority_voting, 
                             anno_key,
                             score_key,
+                            score_cut,
                             celltypist_kwargs):
         modelinfo = self.modelinfo.copy()
         totalidx = adata.obs.index
@@ -73,9 +74,14 @@ class CellAnnotator(CellModels):
                 else:
                     res_prev = _resdic[level_prev].copy()
                     anno_key_prev = level_prev+'|'+anno_key
+                    score_key_prev = level_prev+'|'+score_key
+
                     if anno_key_prev not in res_prev.columns: 
                         continue
-                    cell_idx = res_prev[res_prev[anno_key_prev] == _cell].index
+
+                    cell_idx = res_prev[(res_prev[anno_key_prev] == _cell) &
+                                        (res_prev[score_key_prev] > score_cut)].index
+                    
                     if len(cell_idx) < n_cutoff: 
                         continue
                 
@@ -99,7 +105,8 @@ class CellAnnotator(CellModels):
         return _prediction_results
     
     def annotate(self, adata, target_level = 2, n_cutoff = 50, majority_voting = True, 
-              anno_key = 'majority_voting', score_key = 'conf_score', sample_key = None, celltypist_kwargs = {}):
+              anno_key = 'majority_voting', score_key = 'conf_score', 
+              score_cut = 0.5, sample_key = None, celltypist_kwargs = {}):
         
         """
         Predict cell type labels with pre-trained Pangeapy cell type reference models.
@@ -162,6 +169,7 @@ class CellAnnotator(CellModels):
                                                             majority_voting=majority_voting,
                                                             anno_key=anno_key,
                                                             score_key=score_key,
+                                                            score_cut = score_cut,
                                                             celltypist_kwargs=celltypist_kwargs)
                 return _sample, _return_df
             
@@ -177,6 +185,7 @@ class CellAnnotator(CellModels):
                                                         majority_voting=majority_voting,
                                                         anno_key=anno_key,
                                                         score_key=score_key,
+                                                        score_cut=score_cut,
                                                         celltypist_kwargs=celltypist_kwargs)
 
         _prediction_results = pd.concat([resdic[i] for i in resdic], axis = 0, join='outer')             
