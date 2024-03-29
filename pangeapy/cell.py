@@ -11,7 +11,6 @@ from tqdm import tqdm
 from .models import CellModels
 
 
-multiprocessing.set_start_method('fork')
 celltypist.logger.set_level(40)
 
 def read_pickle(filename):
