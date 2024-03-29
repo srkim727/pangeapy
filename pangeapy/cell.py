@@ -142,6 +142,7 @@ class CellAnnotator(CellModels):
 
             def _annotation_process(index):
                 _sample = sample_list[index]
+                print(f'start cell type annotation: {_sample}')
                 adata_sample = adata[adata.obs[sample_key] == _sample].copy()
                 
                 # Initialize and re-run PCA sample-wise
@@ -164,9 +165,7 @@ class CellAnnotator(CellModels):
                                                             celltypist_kwargs=celltypist_kwargs)
                 return _sample, _return_df
             
-            resdic_ls = [_annotation_process(i) for i in range(len(sample_list))]
-            dummy_ls = [process(token) for token in tqdm(resdic_ls)]
-            resdic = dict(resdic_ls)
+            resdic = dict([_annotation_process(i) for i in range(len(sample_list))])
                 
         else:
             adata_sample = adata.copy()
