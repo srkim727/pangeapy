@@ -203,10 +203,10 @@ class MetaResults():
             integrated['Organ_prob'] = [resdic[i].organ_prediction[1] for i in _indexlist] 
     
         integrated['Pheno_pred'] = [resdic[i].phenotype_prediction[0] 
-                                    if (resdic[i].no_input_feature / resdic[i].no_input_feature_ref) > .5
+                                    if resdic[i].no_input_feature > 1
                                     else np.nan for i in _indexlist] 
         integrated['Pheno_prob'] = [resdic[i].phenotype_prediction[1] 
-                                    if (resdic[i].no_input_feature / resdic[i].no_input_feature_ref) > .5
+                                    if resdic[i].no_input_feature > 1
                                     else np.nan for i in _indexlist]
 
         return integrated
