@@ -157,7 +157,6 @@ class MetaAnnotator(MetaModels):
 
         X = np.array([_proportion.loc[i] if i in _proportion.index else 0 for i in _meta_model.feature_names_in_]).reshape(1,-1)
         _organ_predres = pd.Series(_meta_model.predict_proba(X).flatten(), index =  _meta_model.classes_)
-        print(f'Predicted organ identity : {_organ_predres.idxmax()}, probability: {_organ_predres.max()}')
 
         return _organ_predres
         
