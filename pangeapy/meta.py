@@ -88,15 +88,18 @@ class MetaAnnotator(MetaModels):
                 phenotype_class = 'Tissue'
         
         if phenotype_class == 'Blood':
-            _phenotype_predres = self._predict_blood_phenotypes(_cell_compositions)
+            _phenotype_predres, _input_feature_ref = self._predict_blood_phenotypes(_cell_compositions)
 
         if phenotype_class == 'Tissue':
-            _phenotype_predres = self._predict_tissue_phenotypes(_cell_compositions)
+            _phenotype_predres, _input_feature_ref = self._predict_tissue_phenotypes(_cell_compositions)
         _pheno_pred, _pheno_pred_prob = _phenotype_predres.idxmax(), _phenotype_predres.max()
                 
         _metares.phenotype_prediction_df = _phenotype_predres
         _metares.phenotype_prediction = _pheno_pred, _pheno_pred_prob        
-        
+        _metares.ref_input_feature = _input_feature_ref
+        _metares.no_input_feature = len(set([i.split("|")[0] for i in _input_feature_ref if i in _cell_compositions]))
+        _metares.no_input_feature_ref = len(set([i.split("|")[0] for i in _input_feature_ref]))
+
         _metares.log = 'done'
         return _metares
 
@@ -166,9 +169,9 @@ class MetaAnnotator(MetaModels):
 
         X = np.array([_proportion.loc[i] if i in _proportion.index else 0 for i in _meta_model.feature_names_in_]).reshape(1,-1)
         _phenotype_predres = pd.Series(_meta_model.predict_proba(X).flatten(), index =  _meta_model.classes_)
-        print(f'Predicted phenotype identity : {_phenotype_predres.idxmax()}, probability: {_phenotype_predres.max()}')
+        
 
-        return _phenotype_predres
+        return _phenotype_predres, _meta_model.feature_names_in_
         
     def _predict_tissue_phenotypes(self, cell_composition):
         _modelinfo = self.modelinfo.copy()
@@ -178,9 +181,9 @@ class MetaAnnotator(MetaModels):
 
         X = np.array([_proportion.loc[i] if i in _proportion.index else 0 for i in _meta_model.feature_names_in_]).reshape(1,-1)
         _phenotype_predres = pd.Series(_meta_model.predict_proba(X).flatten(), index =  _meta_model.classes_)
-        print(f'Predicted phenotype identity : {_phenotype_predres.idxmax()}, probability: {_phenotype_predres.max()}')
+        
 
-        return _phenotype_predres
+        return _phenotype_predres, _meta_model.feature_names_in_
     
 
 class MetaAnnotation():
@@ -200,8 +203,12 @@ class MetaResults():
             integrated['Organ_pred'] = [resdic[i].organ_prediction[0] for i in _indexlist]
             integrated['Organ_prob'] = [resdic[i].organ_prediction[1] for i in _indexlist] 
     
-        integrated['Pheno_pred'] = [resdic[i].phenotype_prediction[0] for i in _indexlist] 
-        integrated['Pheno_prob'] = [resdic[i].phenotype_prediction[1] for i in _indexlist]
+        integrated['Pheno_pred'] = [resdic[i].phenotype_prediction[0] 
+                                    if (resdic[i].no_input_feature / resdic[i].no_input_feature_ref) > .5
+                                    else np.nan for i in _indexlist] 
+        integrated['Pheno_prob'] = [resdic[i].phenotype_prediction[1] 
+                                    if (resdic[i].no_input_feature / resdic[i].no_input_feature_ref) > .5
+                                    else np.nan for i in _indexlist]
 
         return integrated
     
