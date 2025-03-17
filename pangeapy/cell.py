@@ -84,7 +84,9 @@ class CellAnnotator(CellModels):
                     else: 
                         cell_idx = res_prev[(res_prev[anno_key_prev] == _cell) &
                                             (res_prev[score_key_prev] > score_cut)].index
-                        if len(cell_idx) < n_cutoff: continue
+                    
+                    if (len(cell_idx) < n_cutoff) and not force_l2: continue
+                    if len(cell_idx) < 1: continue 
                 
                 tdata = adata[cell_idx].copy()
                 # print(f'conducting {level} prediction..')
