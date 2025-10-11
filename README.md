@@ -3,7 +3,7 @@
 ## Installation
 
 ### create conda environment
-conda create -n pangea   
+conda create -n pangea python=3.10 
 conda activate pangea   
 
 ### install python package through github
