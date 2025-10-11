@@ -61,9 +61,7 @@ class CellAnnotator(CellModels):
                             celltypist_kwargs):
         modelinfo = self.modelinfo.copy()
         totalidx = adata.obs.index
-
-        if sample_name is not 'single-run':
-            print(f'{sample_name}: processing...')
+            
 
         _resdic = {}
         for i_level in range(target_level):
@@ -289,6 +287,8 @@ class CellAnnotator(CellModels):
 
             def _annotation_process(index):
                 _sample = sample_list[index]
+
+                print('processing %s...[%s/%s]'%(_sample, index+1, len(sample_list)))
                 
                 adata_sample = adata[adata.obs[sample_key] == _sample].copy()
                 
