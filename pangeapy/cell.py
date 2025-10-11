@@ -241,7 +241,6 @@ class CellAnnotator(CellModels):
                     },
                     index = adata.obs.index,
                 )
-        print(out_df.head())
         
         return out_df
 
