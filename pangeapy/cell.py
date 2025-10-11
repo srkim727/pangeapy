@@ -138,8 +138,10 @@ class CellAnnotator(CellModels):
 
 
  
-            _uncert_results = self._compute_uncertainty(adata = adata, input_pred_res=_prediction_results, **_uncert_kwargs)
-            _prediction_results = _prediction_results.join(_uncert_results, how = 'left')
+            _uncert_results = self._compute_uncertainty(adata = adata, 
+                                                        input_pred_res=_prediction_results, 
+                                                        **_uncert_kwargs)
+            _prediction_results = _prediction_results.merge(_uncert_results, left_index = True, right_index = True, how = 'left')
 
         return _prediction_results
     
@@ -238,7 +240,8 @@ class CellAnnotator(CellModels):
                     },
                     index = adata.obs.index,
                 )
-
+        print(out_df.head())
+        
         return out_df
 
     def annotate(self, adata, target_level = 2, n_cutoff = 50, force_l2 = False, score_cut = 0.5,  
