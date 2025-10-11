@@ -62,11 +62,15 @@ class CellAnnotator(CellModels):
         modelinfo = self.modelinfo.copy()
         totalidx = adata.obs.index
 
+        if sample_name is not None:
+            print(f'{sample_name}: processing...')
+
         _resdic = {}
         for i_level in range(target_level):
             level = 'Level'+str(i_level+1)
             level_prev = 'Level'+str(i_level)
             
+            print(f'conducting {level} annotation...')
 
             idxs = modelinfo[modelinfo['Level'] == level].index
 
@@ -114,6 +118,8 @@ class CellAnnotator(CellModels):
 
         if compute_uncertainty:
             
+            print('computing uncertainty scores...')
+
             _uncert_kwargs = dict( 
                 input_score_key = 'Level1|conf_score',
                 input_graph_key = "distances",      
@@ -136,7 +142,7 @@ class CellAnnotator(CellModels):
             except:
                 _uncert_results = pd.DataFrame()
             
-            _prediction_results.join(_uncert_results, how = 'left', inplace = True)
+            _prediction_results = _prediction_results.join(_uncert_results, how = 'left')
 
         return _prediction_results
     
@@ -283,7 +289,7 @@ class CellAnnotator(CellModels):
 
             def _annotation_process(index):
                 _sample = sample_list[index]
-                print(f'start cell type annotation: {_sample}')
+                
                 adata_sample = adata[adata.obs[sample_key] == _sample].copy()
                 
                 # Initialize and re-run PCA sample-wise
