@@ -172,7 +172,7 @@ class CellAnnotator(CellModels):
 
         # 2) load sparse adjacency (binary)
         if input_graph_key not in adata.obsp:
-            print(f"⚠️ Graph '{graph_key}' not found; computing neighbors...")
+            print(f"⚠️ Graph '{input_graph_key}' not found; computing neighbors...")
             sc.pp.neighbors(adata)
 
         A = adata.obsp[input_graph_key].tocsr().astype(np.float32)
