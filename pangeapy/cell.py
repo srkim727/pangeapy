@@ -62,7 +62,7 @@ class CellAnnotator(CellModels):
         modelinfo = self.modelinfo.copy()
         totalidx = adata.obs.index
 
-        if sample_name is not None:
+        if sample_name is not 'single-run':
             print(f'{sample_name}: processing...')
 
         _resdic = {}
@@ -146,6 +146,7 @@ class CellAnnotator(CellModels):
         return _prediction_results
     
     def _compute_uncertainty(
+        self,
         adata: ad.AnnData,
         input_pred_res: pd.DataFrame,
         input_score_key: str,
