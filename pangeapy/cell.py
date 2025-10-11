@@ -137,11 +137,8 @@ class CellAnnotator(CellModels):
                 _uncert_kwargs.update(uncertainty_kwargs)
 
 
-            try:
-                _uncert_results = self._compute_uncertainty(adata, input_pred_res=_prediction_results, **_uncert_kwargs)
-            except:
-                _uncert_results = pd.DataFrame()
-            
+ 
+            _uncert_results = self._compute_uncertainty(adata = adata, input_pred_res=_prediction_results, **_uncert_kwargs)
             _prediction_results = _prediction_results.join(_uncert_results, how = 'left')
 
         return _prediction_results
