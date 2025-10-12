@@ -6,12 +6,13 @@
 conda create -n pangea python=3.10 
 conda activate pangea   
 
-### install python package through github
+### install python package through pip/github
 pip install --user git+https:<area>//github.com/srkim727/pangeapy.git   
 
 ## Usage
 you can find an example of usage from the following link
-https://github.com/srkim727/pangeapy/blob/main/docs/Pangea_vignette.ipynb   
+cell and meta annotation: https://github.com/srkim727/pangeapy/blob/main/docs/vignette_annotation.ipynb   
+calling missing cell types: https://github.com/srkim727/pangeapy/blob/main/docs/vignette_identifying_missing_cells.ipynb
 
 1) cell annotation   
    
@@ -48,5 +49,11 @@ this process will generate a dataframe of samples with predicted organ identitie
 |S00028-Ja001E-PBCa        |Blood        |0.996022  |BP7       |0.751714  |
 |N00032-Ja001E-PBGa        |Blood        |0.845979  |BP7       |0.778266  |
 |H00054-Ha001E-PBGa        |Blood        |0.889262  |BP1       |0.852949  |
+
+
+3) identification of missing cell types
+
+use compute_uncertainty = True option in cell_anno model
+please refer to https://github.com/srkim727/pangeapy/blob/main/docs/vignette_identifying_missing_cells.ipynb
 
 ## Citation

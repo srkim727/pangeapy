@@ -253,22 +253,87 @@ class CellAnnotator(CellModels):
         By default, hierarchical cell type prediction is conducted (Level1 -> Level2).
         Sublevel annotation is conducted only for the cell types with >= 50 cell counts.
 
+        
         Parameters
         ----------
-        adata : anndata, input single-cell data
-            The single-cell data for which we want to get the label predictions.
-            Make sure they have 1e4-normalized log1p transformed expression matrix.
-        
-        target_level: int, 1 or 2 (default)
-            Levels of cell type annotation. 
-            If it is set to 1, sub-type level (Level2) annotation would not be conducted.
+        adata : anndata.AnnData
+            Input single-cell data. Expression should be 1e4-normalized and log1p-transformed
+            in either `adata.X` or `adata.raw.X`. If `adata.X` contains negative values, the
+            method falls back to `adata.raw.to_adata()`.
 
-        
+        target_level : int, default=2
+            Number of hierarchical levels to annotate. Use 1 for only Level1 (broad types),
+            or 2 to also run Level2 (subtypes) for eligible parent groups.
+
+        n_cutoff : int, default=50
+            Minimum number of cells required in a parent group to trigger Level2 on that group
+            (unless `force_l2=True`). Internally coerced to at least 50.
+
+        force_l2 : bool, default=False
+            If True, always run Level2 for any parent group matched by Level1, ignoring
+            `n_cutoff` and `score_cut`. If False, Level2 runs only when both cell count
+            (>= n_cutoff) and parent confidence (`score_cut`) requirements are met.
+
+        score_cut : float, default=0.5
+            Threshold on the parent-level score used to
+            select cells for Level2 when `force_l2=False`.
+
+        majority_voting : bool, default=True
+            Passed to CellTypist. If True, applies CellTypist’s majority voting to smooth
+            per-cell predictions.
+
+        anno_key : {"majority_voting", "predicted_labels"}, default="majority_voting"
+            Which output column from CellTypist predictions to treat as the annotation label
+            at each level.
+
+        score_key : {"conf_score", "cert_score"}, default="conf_score"
+            Which score column from CellTypist predictions to treat as the per-cell score
+            at each level. Used for `score_cut` and for combining scores across levels.
+
+        sample_key : str or None, default=None
+            If provided, annotate each sample independently by splitting `adata.obs[sample_key]`.
+            Samples with cell count ≤ `n_cutoff` are skipped. If None, processes the whole
+            AnnData at once.
+
+        compute_uncertainty : bool, default=False
+            If True, computes neighborhood-based uncertainty metrics and merges them into the
+            result. See `uncertainty_kwargs` for configuration.
+
+        uncertainty_kwargs : dict or None, default=None
+            Optional overrides for uncertainty computation. Defaults used if omitted:
+                input_score_key     : "Level1|conf_score"      # score column in the prediction table
+                input_graph_key     : "distances"              # or "connectivities" in `adata.obsp`
+                n_neighbors         : 10
+                ascending           : True                     # auto-set when graph is "distances"/"connectivities"
+                negate              : True                     # negate z-scored scores before smoothing
+                uncert_cutoff       : 1.0
+                cert_cutoff         : 0.8
+                self_vote           : 0.5
+                output_score_key    : "score_uncert"
+                output_pred_key     : "pred_uncert"
+                output_consen_key   : "consensus_uncert"
+
+            Notes:
+            - If `input_graph_key` is absent in `adata.obsp`, neighbors are computed via `sc.pp.neighbors`.
+            - The output columns are appended to the returned DataFrame.
+
+        celltypist_kwargs : dict or None, default=None
+            (Use according to your CellTypist version.)
 
         Returns
         -------
-        y_pred : ndarray of shape (n_samples,)
-            Vector containing the class labels for each sample.
+        pd.DataFrame
+            A DataFrame indexed by `adata.obs_names` containing, for each hierarchical level:
+                - `Level{k}|{anno_key}`: predicted labels
+                - `Level{k}|conf_score`, `Level{k}|cert_score`: per-cell scores
+            Plus summary columns:
+                - `PG_annotations`     : concatenated labels across levels
+                - `PG_combined_score`  : geometric mean across selected level scores
+                - `Sample`             : sample name 
+            If `compute_uncertainty=True`, also includes:
+                - `{output_score_key}`, `{output_pred_key}`, `{output_consen_key}`
+
+        
         """
         # 
         resdic = {}
