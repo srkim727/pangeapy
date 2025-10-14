@@ -57,3 +57,4 @@ use compute_uncertainty = True option in cell_anno model
 please refer to https://github.com/srkim727/pangeapy/blob/main/docs/vignette_identifying_missing_cells.ipynb
 
 ## Citation
+Kim, unpublished
