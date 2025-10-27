@@ -3,8 +3,6 @@
 `pangeapy` is a Python package designed for **automated cell type annotation** and **metadata prediction** using the **PANGEA reference atlas**.
 It enables researchers to easily label single-cell transcriptomic data and predict higher-level phenotypic contexts such as organ or disease state, with minimal preprocessing.
 
----
-
 ## Installation
 
 ### 1) Create a Conda environment
@@ -20,13 +18,9 @@ conda activate pangea
 pip install --user git+https://github.com/srkim727/pangeapy.git
 ```
 
----
-
 ## Usage
 
 Below are example workflows for major modules in `pangeapy`.
-
----
 
 ### 1) Cell Annotation
 
@@ -57,8 +51,6 @@ The function returns a DataFrame where each cell is annotated across multiple hi
 
 > Each row corresponds to one cell and includes confidence and certainty scores for hierarchical annotations.
 
----
-
 ### 2) Metadata Prediction
 
 The **MetaAnnotator** module predicts higher-level sample attributes such as **organ identity** and **multicellular blood phenotypes**.
@@ -83,8 +75,6 @@ merged = meta.integrate()
 
 > The results can be merged with cell annotation outputs for downstream analysis or visualization.
 
----
-
 ### 3) Identifying Missing Cell Types
 
 To detect potentially **unrepresented or missing cell types**,
@@ -97,8 +87,6 @@ pred = cell_anno.annotate(adata)
 
 📘 For detailed examples, see:
 [🔗 vignette_identifying_missing_cells.ipynb](https://github.com/srkim727/pangeapy/blob/main/docs/vignette_identifying_missing_cells.ipynb)
-
----
 
 ## Tutorials
 
