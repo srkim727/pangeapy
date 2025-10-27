@@ -78,7 +78,8 @@ merged = meta.integrate()
 ### 3) Identifying Missing Cell Types
 
 To detect potentially **unrepresented or missing cell types**,
-enable uncertainty estimation in the annotation step:
+enable uncertainty estimation in the annotation step
+by setting `compute_uncertainty=True`:
 
 ```python
 cell_anno = CellAnnotator(compute_uncertainty=True)
