@@ -44,10 +44,10 @@ pred = cell_anno.annotate(adata, sample_key='Sample')
 
 The function returns a DataFrame where each cell is annotated across multiple hierarchical levels:
 
-|index|Level1|predicted_labels|Level1|over_clustering|Level1|majority_voting|Level1|conf_score|Level1|cert_score|Level2|predicted_labels|Level2|over_clustering|Level2|majority_voting|Level2|conf_score|Level2|cert_score|PG_annotations|PG_combined_score|Sample|
-|------|------------------|---------------|--------------|-------------|-------------|----------------|--------------|--------------|-------------|-------------|--------------|----------------|
-|AAACCTGAGAAAGTGG-1-gPlexA1|T&NK|4|T&NK|0.999999|0.275238|NK_CD16|36|NK_CD16|0.999932|0.216732|T&NK|NK_CD16|0.999966|S00109-Ja001E-PBCa|
-|AAAGATGGTTCCACTC-1-gPlexA1|T&NK|29|T&NK|0.999993|0.503419|NK_CD16|35|NK_CD16|0.992871|0.344663|T&NK|NK_CD16|0.996425|S00109-Ja001E-PBCa|
+|index|Level1&#124;predicted_labels   |Level1&#124;over_clustering|Level1&#124;majority_voting|Level1&#124;conf_score|Level1&#124;cert_score|Level2&#124;predicted_labels|Level2&#124;over_clustering|Level2&#124;majority_voting|Level2&#124;conf_score|Level2&#124;cert_score|PG_annotations|PG_combined_score|Sample  |
+|--------------------------|----------------------|----------------------|-----------------|-----------------|-----------------------|----------------------|----------------------|-----------------|-----------------|--------------|-----------------|--------|------------------|
+|AAACCTGAGAAAGTGG-1-gPlexA1|T&NK                  |4                     |T&NK             |0.999999         |0.275238               |NK_CD16               |36                    |NK_CD16          |0.999932         |0.216732      |T&NK&#124;NK_CD16     |0.999966|S00109-Ja001E-PBCa|
+|AAAGATGGTTCCACTC-1-gPlexA1|T&NK                  |29                    |T&NK             |0.999993         |0.503419               |NK_CD16               |35                    |NK_CD16          |0.992871         |0.344663      |T&NK&#124;NK_CD16     |0.996425|S00109-Ja001E-PBCa|
 
 > Each row corresponds to one cell and includes confidence and certainty scores for hierarchical annotations.
 
@@ -85,9 +85,6 @@ cell_anno = CellAnnotator(compute_uncertainty=True)
 pred = cell_anno.annotate(adata)
 ```
 
-📘 For detailed examples, see:
-[🔗 vignette_identifying_missing_cells.ipynb](https://github.com/srkim727/pangeapy/blob/main/docs/vignette_identifying_missing_cells.ipynb)
-
 ## Tutorials
 
 | Task                           | Notebook                                                                                                                                 |
@@ -95,9 +92,7 @@ pred = cell_anno.annotate(adata)
 | 🔹 Cell & Metadata Annotation  | [vignette_annotation.ipynb](https://github.com/srkim727/pangeapy/blob/main/docs/vignette_annotation.ipynb)                               |
 | 🔹 Missing Cell Type Detection | [vignette_identifying_missing_cells.ipynb](https://github.com/srkim727/pangeapy/blob/main/docs/vignette_identifying_missing_cells.ipynb) |
 
----
-
-## 🧠 Citation
+## Citation
 
 Kim, *unpublished.*
 
