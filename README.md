@@ -3,6 +3,14 @@
 `pangeapy` is a Python package designed for **automated cell type annotation** and **metadata prediction** using the **PANGEA reference atlas**.
 It enables researchers to easily label single-cell transcriptomic data and predict higher-level phenotypic contexts such as organ or disease state, with minimal preprocessing.
 
+## Explore PANGEA through a web interface
+
+You can explore the interactive documentation at **[https://srkim727.github.io/](https://srkim727.github.io/)**, where you can:
+
+1. **Annotate cells** — Automatically assign fine-grained cell type labels using the PANGEA reference model.  
+2. **Predict metadata** — Infer higher-level attributes such as organ, tissue, or multicellular phenotype.  
+3. **Identify missing cell types** — Detect potential novel or unrepresented cell populations through uncertainty estimation.
+
 ## Installation
 
 ### 1) Create a Conda environment
