@@ -4,13 +4,13 @@
 It enables researchers to easily label single-cell transcriptomic data and predict higher-level phenotypic contexts such as organ or disease state, with minimal preprocessing.
 
 PANGEA reference model can be accessed in two ways:
-1. **Web interface** — Perform cell annotation *without coding*  
+1. **Web interface** — Perform cell annotation and explore PANGEA *without coding*  
 2. **Python package** — Integrate annotation and prediction into reproducible pipeline
 
 ## 1) Web interface
 
 *(No installation or coding required)*  
-You can try cell annotation directly at **[https://srkim727.github.io/](https://srkim727.github.io/)**.
+You can try cell annotation and explore the PANGEA reference atlas directly at **[https://srkim727.github.io/](https://srkim727.github.io/)**.
 
 ![PANGEA web interface](./docs/img/251028_screenshot.png)
 
