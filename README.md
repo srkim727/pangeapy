@@ -5,7 +5,7 @@ It enables researchers to easily label single-cell transcriptomic data and predi
 
 ## Explore PANGEA through a web interface
 
-You can explore the interactive documentation at **[https://srkim727.github.io/](https://srkim727.github.io/)**, where you can:
+You can explore the interactive interface at **[https://srkim727.github.io/](https://srkim727.github.io/)**, where you can:
 
 1. **Annotate cells** — Automatically assign fine-grained cell type labels using the PANGEA reference model.  
 2. **Predict metadata** — Infer higher-level attributes such as organ, tissue, or multicellular phenotype.  
