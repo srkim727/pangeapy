@@ -1,0 +1,6 @@
+sphinx
+myst-nb
+furo
+sphinx-autodoc-typehints
+sphinx-copybutton
+sphinx-design
