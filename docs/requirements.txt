@@ -1,6 +1,9 @@
 sphinx
-myst-nb
-furo
+sphinx-rtd-theme
 sphinx-autodoc-typehints
 sphinx-copybutton
 sphinx-design
+nbsphinx
+myst-parser
+ipython
+jupyter
