@@ -4,7 +4,7 @@
 It enables researchers to easily label single-cell transcriptomic data and predict higher-level phenotypic contexts such as organ or disease state, with minimal preprocessing.
 
 PANGEA reference model can be accessed in two ways:
-1. **Web interface** — Perform cell annotation and explore PANGEA *without any installation*
+1. **Web interface** — Perform cell annotation and explore PANGEA
 2. **Python package** — Integrate annotation and prediction into reproducible pipeline
 
 ## 1) Web interface
@@ -13,8 +13,7 @@ You can try cell annotation and explore the PANGEA reference atlas directly at *
 *(No installation required)*
 
 ### What you can do
-1. **Annotate cells** — Upload `.csv` or `.csv.gz` gene expression files  
-   → Automatically assign cell labels using PANGEA models  
+1. **Annotate cells** — Upload `.csv` or `.csv.gz` gene expression files and automatically assign cell labels using PANGEA models  
 2. **Explore cell distributions** — Visualize organ- and tissue-level patterns  
 3. **Explore gene expression** — Plot expression of multiple genes across all cell types
 
