@@ -1,60 +1,57 @@
-# pangeapy
+# 🌏 pangeapy
 
-## Installation
+`pangeapy` is a Python package designed for **automated cell type annotation** and **metadata prediction** using the **PANGEA reference atlas**.
+It enables researchers to easily label single-cell transcriptomic data and predict higher-level phenotypic contexts such as organ or disease state, with minimal preprocessing.
 
-### create conda environment
-conda create -n pangea python=3.10 
-conda activate pangea   
+PANGEA reference model can be accessed in two ways:
+1. **Web interface** — Perform cell annotation and explore PANGEA
+2. **Python package** — Integrate annotation and prediction into reproducible pipeline
 
-### install python package through pip/github
-pip install --user git+https:<area>//github.com/srkim727/pangeapy.git   
+## 1) Web interface
 
-## Usage
-you can find an example of usage from the following link
-cell and meta annotation: https://github.com/srkim727/pangeapy/blob/main/docs/vignette_annotation.ipynb   
-calling missing cell types: https://github.com/srkim727/pangeapy/blob/main/docs/vignette_identifying_missing_cells.ipynb
+You can try cell annotation and explore the PANGEA reference atlas directly at **[https://srkim727.github.io/](https://srkim727.github.io/)**.
+*(No installation required)*
 
-1) cell annotation   
-   
-  loading cell annotation modules   
-  ```cell_anno = CellAnnotator()```   
-   
-cell annotation modules will label every cell in the scRNA-seq data in AnnData format   
-(counts should be 10^4 normalized and log1p-transformed)   
-```pred = cell_anno.annotate(adata, sample_key='Sample')```      
+### What you can do
+1. **Annotate cells** — Upload `.csv` or `.csv.gz` gene expression files and automatically assign cell labels using PANGEA models  
+2. **Explore cell distributions** — Visualize organ- and tissue-level patterns  
+3. **Explore gene expression** — Plot expression of multiple genes across all cell types
 
-generated is a dataframe of cell indexes with hierarchical cell annotations and prediction probabilities
+![PANGEA web interface](./docs/img/251028_screenshot.png)
 
-|index|Level1&#124;predicted_labels   |Level1&#124;over_clustering|Level1&#124;majority_voting|Level1&#124;conf_score|Level1&#124;cert_score|Level2&#124;predicted_labels|Level2&#124;over_clustering|Level2&#124;majority_voting|Level2&#124;conf_score|Level2&#124;cert_score|PG_annotations|PG_combined_score|Sample  |
-|--------------------------|----------------------|----------------------|-----------------|-----------------|-----------------------|----------------------|----------------------|-----------------|-----------------|--------------|-----------------|--------|------------------|
-|AAACCTGAGAAAGTGG-1-gPlexA1|T&NK                  |4                     |T&NK             |0.999999         |0.275238               |NK_CD16               |36                    |NK_CD16          |0.999932         |0.216732      |T&NK&#124;NK_CD16     |0.999966|S00109-Ja001E-PBCa|
-|AAAGATGGTTCCACTC-1-gPlexA1|T&NK                  |29                    |T&NK             |0.999993         |0.503419               |NK_CD16               |35                    |NK_CD16          |0.992871         |0.344663      |T&NK&#124;NK_CD16     |0.996425|S00109-Ja001E-PBCa|
+## 2) Python package
 
+### Installation
 
-2) metadata prediction
+(1) Create a Conda environment
 
-loading metadata annotation module   
-```meta_anno = MetaAnnotator()```
+```bash
+conda create -n pangea python=3.10
+conda activate pangea
+```
 
-metadata annotation modules predict each sample's organ identity and disease-associated phenotypes   
-```meta = meta_anno.annotate(pred, sample_key='Sample')```   
-```merged = meta.integrate()```
+(2) Install via GitHub
 
-this process will generate a dataframe of samples with predicted organ identities and phenotypes   
+```bash
+pip install --user git+https://github.com/srkim727/pangeapy.git
+```
+### Quick start:
 
-|index                    |Organ_pred   |Organ_prob|Pheno_pred|Pheno_prob|
-|--------------------------|-------------|----------|----------|----------|
-|S00052-Ja005E-PBCa        |Blood        |0.949866  |BP2       |0.535271  |
-|H00067-Ha001E-PBGa        |Blood        |0.939722  |BP4       |0.997693  |
-|S00028-Ja001E-PBCa        |Blood        |0.996022  |BP7       |0.751714  |
-|N00032-Ja001E-PBGa        |Blood        |0.845979  |BP7       |0.778266  |
-|H00054-Ha001E-PBGa        |Blood        |0.889262  |BP1       |0.852949  |
+```python
+from pangeapy import CellAnnotator, MetaAnnotator
 
+pred = CellAnnotator().annotate(adata)
+meta = MetaAnnotator().annotate(pred)
+```
 
-3) identification of missing cell types
+### Tutorials
 
-use compute_uncertainty = True option in cell_anno model
-please refer to https://github.com/srkim727/pangeapy/blob/main/docs/vignette_identifying_missing_cells.ipynb
+| Task | Notebook |
+|------|-----------|
+| 01 Cell Annotation | [01_vignette_cell_annotation.ipynb](https://github.com/srkim727/pangeapy/blob/main/docs/01_vignette_cell_annotation.ipynb) |
+| 02 Metadata Annotation | [02_vignette_meta_annotation.ipynb](https://github.com/srkim727/pangeapy/blob/main/docs/02_vignette_meta_annotation.ipynb) |
+| 03 Missing Cell Type Detection | [03_vignette_identifying_missing_cells.ipynb](https://github.com/srkim727/pangeapy/blob/main/docs/03_vignette_identifying_missing_cells.ipynb) |
 
 ## Citation
+
 Kim, unpublished
