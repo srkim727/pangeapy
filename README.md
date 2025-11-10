@@ -26,7 +26,7 @@ You can try cell annotation and explore the PANGEA reference atlas directly at *
 (1) Create a Conda environment
 
 ```bash
-conda create -n pangea python=3.10
+conda create -n pangea python=3.11
 conda activate pangea
 ```
 
@@ -52,6 +52,13 @@ meta = MetaAnnotator().annotate(pred)
 | 02 Metadata Annotation | [02_vignette_meta_annotation.ipynb](https://github.com/srkim727/pangeapy/blob/main/docs/02_vignette_meta_annotation.ipynb) |
 | 03 Missing Cell Type Detection | [03_vignette_identifying_missing_cells.ipynb](https://github.com/srkim727/pangeapy/blob/main/docs/03_vignette_identifying_missing_cells.ipynb) |
 
-## Citation
+
+### Requirements
+celltypist
+scipy
+parmap
+
+
+### Citation
 
 Kim, unpublished
