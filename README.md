@@ -9,7 +9,7 @@ PANGEA reference model can be accessed in two ways:
 
 ## 1) Web interface
 
-You can try cell annotation and explore the PANGEA reference atlas directly at **[https://srkim727.github.io/](https://srkim727.github.io/)**.
+You can try cell annotation and explore the PANGEA reference atlas directly at **[https://pangeapy.org/](https://pangeapy.org/)**.
 *(No installation required)*
 
 ### What you can do
