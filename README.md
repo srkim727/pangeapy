@@ -51,7 +51,7 @@ meta = MetaAnnotator().annotate(pred)
 | 01 Cell Annotation | [01_vignette_cell_annotation.ipynb](https://github.com/srkim727/pangeapy/blob/main/docs/01_vignette_cell_annotation.ipynb) |
 | 02 Metadata Annotation | [02_vignette_meta_annotation.ipynb](https://github.com/srkim727/pangeapy/blob/main/docs/02_vignette_meta_annotation.ipynb) |
 | 03 Missing Cell Type Detection | [03_vignette_identifying_missing_cells.ipynb](https://github.com/srkim727/pangeapy/blob/main/docs/03_vignette_identifying_missing_cells.ipynb) |
-
+| 04 Building Plus One Model | [04_vignette_plus_one_model.ipynb](https://github.com/srkim727/pangeapy/blob/main/docs/04_vignette_plus_one_model.ipynb) |
 
 ### Requirements
 celltypist
