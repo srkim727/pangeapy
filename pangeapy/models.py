@@ -1,6 +1,7 @@
 import os
 import pathlib
 import requests
+import time
 import pandas as pd
 from functools import reduce
 
@@ -14,23 +15,38 @@ _anno_model_path = os.getenv('ANNO_MODEL_PATH', default = os.path.join(str(pathl
 _meta_model_path = os.getenv('META_MODEL_PATH', default = os.path.join(str(pathlib.Path.home()), '.pangea'))
 
 
-def _get_url(filename, url):
-    try:
-        # stream=True is safer for downloads
-        with requests.get(url, stream=True, timeout=30) as r:
-            # Only save if the server returns "200 OK"
-            if r.status_code == 200:
-                with open(filename, 'wb') as f:
-                    for chunk in r.iter_content(chunk_size=8192):
-                        f.write(chunk)
-                return True
-            else:
-                print(f"Failed to download {url}. Status code: {r.status_code}")
-                return False
-    except Exception as e:
-        print(f"Error downloading {url}: {e}")
-        return False
 
+def _get_url(filename, url):
+    max_retries = 5
+    wait_time = 3  # seconds
+    
+    for attempt in range(max_retries):
+        try:
+            with requests.get(url, stream=True, timeout=30) as r:
+                # Case 1: Success (200)
+                if r.status_code == 200:
+                    with open(filename, 'wb') as f:
+                        for chunk in r.iter_content(chunk_size=8192):
+                            f.write(chunk)
+                    return True
+                
+                # Case 2: Preparing (202) -> Wait and Retry
+                elif r.status_code == 202:
+                    print(f"Server is preparing the file (Status 202). Retrying in {wait_time}s... ({attempt+1}/{max_retries})")
+                    time.sleep(wait_time)
+                    continue  # Jump to next iteration of the loop
+                
+                # Case 3: Actual Failure (404, 500, etc.)
+                else:
+                    print(f"Failed to download {url}. Status code: {r.status_code}")
+                    return False
+                    
+        except Exception as e:
+            print(f"Error downloading {url}: {e}")
+            return False
+            
+    print("Max retries exceeded.")
+    return False
 
 class CellModels():
     def __init__(self, 
