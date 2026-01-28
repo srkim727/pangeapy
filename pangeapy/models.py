@@ -15,7 +15,21 @@ _meta_model_path = os.getenv('META_MODEL_PATH', default = os.path.join(str(pathl
 
 
 def _get_url(filename, url):
-    open(filename, 'wb').write(requests.get(url).content)
+    try:
+        # stream=True is safer for downloads
+        with requests.get(url, stream=True, timeout=30) as r:
+            # Only save if the server returns "200 OK"
+            if r.status_code == 200:
+                with open(filename, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        f.write(chunk)
+                return True
+            else:
+                print(f"Failed to download {url}. Status code: {r.status_code}")
+                return False
+    except Exception as e:
+        print(f"Error downloading {url}: {e}")
+        return False
 
 
 class CellModels():
@@ -37,9 +51,19 @@ class CellModels():
         self.models_info_file_path = model_savedir+'/'+_anno_models_info_file
         
         # Importing model metadata
-        if os.path.isfile(self.models_info_file_path):
-            os.remove(self.models_info_file_path)
-        _get_url(self.models_info_file_path, _anno_models_url)
+        file_exists = os.path.isfile(self.models_info_file_path) and os.path.getsize(self.models_info_file_path) > 0
+        
+        # Only download if file is missing, empty, or reset is requested
+        if not file_exists or reset_ref_path:
+            print(f"Downloading metadata to {self.models_info_file_path}...")
+            success = _get_url(self.models_info_file_path, _anno_models_url)
+            
+            if not success:
+                # If download failed and we don't have a backup, we must stop
+                if not os.path.isfile(self.models_info_file_path):
+                    raise RuntimeError("Could not download anno_models.csv and no local copy exists.")
+                else:
+                    print("Download failed. Using existing local copy.")
 
         # Configuring model metadata file
         _modeldf = pd.read_csv(self.models_info_file_path, header=None)
