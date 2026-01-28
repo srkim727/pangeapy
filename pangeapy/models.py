@@ -9,10 +9,14 @@ from functools import reduce
 
 
 ## models information
-_anno_models_url ='https://zenodo.org/records/18398466/files/anno_models.csv?download=1'
-_meta_models_url ='https://figshare.com/ndownloader/files/58652173'
-_anno_models_url ='https://ndownloader.figshare.com/files/58652170'
-_meta_models_url ='https://ndownloader.figshare.com/files/58652173'
+# _anno_models_url ='https://zenodo.org/records/18398466/files/anno_models.csv?download=1'
+# _meta_models_url ='https://figshare.com/ndownloader/files/58652173'
+# _anno_models_url ='https://ndownloader.figshare.com/files/58652170'
+# _meta_models_url ='https://ndownloader.figshare.com/files/58652173'
+
+_anno_models_url ='https://ndownloader.figshare.com/files/61417861'
+_meta_models_url ='https://ndownloader.figshare.com/files/61417864'
+
 _anno_models_info_file = 'anno_models.csv'
 _meta_models_info_file = 'meta_models.csv'
 _anno_model_path = os.getenv('ANNO_MODEL_PATH', default = os.path.join(str(pathlib.Path.home()), '.pangea'))
@@ -37,6 +41,7 @@ def _get_url(filename, url):
                 # Case 2: Preparing (202) -> Wait and Retry
                 elif r.status_code == 202:
                     print(f"Server is preparing the file (Status 202). Retrying in {wait_time}s... ({attempt+1}/{max_retries})")
+                    print(f'{filename} .. {url}')
                     time.sleep(wait_time)
                     continue  # Jump to next iteration of the loop
                 
@@ -63,8 +68,8 @@ class CellModels():
             model_savedir = _anno_model_path
 
         if reset_ref_path:
-            if os.path.isdir(model_savedir+'/anno_models'):
-                os.removedirs(model_savedir+'/anno_models')
+            if os.path.isdir(model_savedir):
+                os.removedirs(model_savedir)
         os.makedirs(model_savedir, exist_ok=True)
         
         self.model_savedir = model_savedir
