@@ -18,7 +18,7 @@ _meta_model_path = os.getenv('META_MODEL_PATH', default = os.path.join(str(pathl
 
 def _get_url(filename, url):
     max_retries = 5
-    wait_time = 3  # seconds
+    wait_time = 10  # seconds
     
     for attempt in range(max_retries):
         try:
