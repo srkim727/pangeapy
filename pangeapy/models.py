@@ -6,9 +6,13 @@ import pandas as pd
 from functools import reduce
 
 
+
+
 ## models information
 _anno_models_url ='https://zenodo.org/records/18398466/files/anno_models.csv?download=1'
 _meta_models_url ='https://figshare.com/ndownloader/files/58652173'
+_anno_models_url ='https://ndownloader.figshare.com/files/58652170'
+_meta_models_url ='https://ndownloader.figshare.com/files/58652173'
 _anno_models_info_file = 'anno_models.csv'
 _meta_models_info_file = 'meta_models.csv'
 _anno_model_path = os.getenv('ANNO_MODEL_PATH', default = os.path.join(str(pathlib.Path.home()), '.pangea'))
